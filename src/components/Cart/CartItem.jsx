@@ -15,7 +15,7 @@ const CartItem = ({ data }) => {
 
   return (
     <div className="w-full flex justify-between">
-      <Link className="w-[60%]" to={`/${id}`}>
+      <Link className="w-[60%]" to={`/product/${id}`}>
         <div className="w-full flex justify-between h-40 m-4 rounded-md shadow-md border-r-20 bg-white">
           <div className="w-80 h-40">
             <img

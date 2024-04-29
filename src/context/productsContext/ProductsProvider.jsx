@@ -17,7 +17,7 @@ const reducer = (state, action) => {
       return {
         ...state,
         products: payload,
-        filteredProducts: payload.slice(0, 10),
+        filteredProducts: payload,
         total: payload.length,
       };
     case "filter":

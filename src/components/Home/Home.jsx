@@ -1,12 +1,23 @@
 import { useContext } from "react";
+import { GrCaretNext, GrCaretPrevious } from "react-icons/gr";
 import { productsContext } from "../../context/productsContext/productsContext";
+import usePagination from "../../hooks/use-Pagination";
 import Filter from "../Filter/Filter";
 import Product from "../Products/Product";
 
 const Home = () => {
   const { state } = useContext(productsContext);
 
-  const { filteredProducts: productsData } = state;
+  const { filteredProducts } = state;
+
+  const [
+    pages,
+    currentPage,
+    pageChangeHandler,
+    nextHandler,
+    prevHandler,
+    productsData,
+  ] = usePagination(filteredProducts);
 
   return (
     <div className="w-full h-full flex">
@@ -20,7 +31,48 @@ const Home = () => {
               <Product key={item.id} product={item} />
             ))}
         </div>
-        <div className="w-full h-[4rem] mt-auto "></div>
+        <div className="w-full h-[4rem] flex gap-4 items-center justify-center mt-auto ">
+          {pages.length > 0 && (
+            <>
+              <div
+                onClick={prevHandler}
+                className={
+                  "h-[2rem] w-[3rem] flex items-center justify-center border border-black rounded-md " +
+                  (currentPage === 1
+                    ? " bg-black text-gray-200 cursor-default"
+                    : " cursor-pointer")
+                }
+              >
+                <GrCaretPrevious />
+              </div>
+              {pages.map((item) => (
+                <div
+                  onClick={pageChangeHandler}
+                  className={
+                    "h-[2rem] w-[3rem] flex items-center justify-center border border-black rounded-md " +
+                    (currentPage === item
+                      ? " cursor-default bg-black text-gray-200"
+                      : "cursor-pointer")
+                  }
+                  key={item}
+                >
+                  {item}
+                </div>
+              ))}
+              <div
+                onClick={nextHandler}
+                className={
+                  "h-[2rem] w-[3rem] flex items-center justify-center border border-black rounded-md " +
+                  (currentPage === pages.length
+                    ? " cursor-default text-gray-200 bg-black"
+                    : " cursor-pointer")
+                }
+              >
+                <GrCaretNext />
+              </div>
+            </>
+          )}
+        </div>
       </div>
     </div>
   );

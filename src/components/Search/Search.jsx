@@ -11,7 +11,6 @@ const content = (
 
 const Search = () => {
   const query = useLoaderData();
-  const [time, setTime] = useState(400);
   const [fall, setFall] = useState(content);
 
   const {
@@ -27,12 +26,12 @@ const Search = () => {
           Loading Failed. Your internet connection is slow or dead.
         </div>
       ));
-    }, time);
+    }, 500);
     return () => {
       dispatch({ type: "nullify-search" });
       setFall(content);
     };
-  }, [dispatch, query, time]);
+  }, [dispatch, query]);
   return (
     <>
       {productsData && productsData.length > 0 && (

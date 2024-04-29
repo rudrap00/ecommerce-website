@@ -23,7 +23,7 @@ function App() {
           element: <Cart />,
         },
         {
-          path: ":id",
+          path: "product/:id",
           element: <ProductPage />,
           loader: async ({ params: { id } }) => {
             const res = await fetch(`https://dummyjson.com/products/${id}`);

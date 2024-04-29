@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
+import RatingStars from "./RatingStars";
 
 const Product = ({ product }) => {
-  const { thumbnail, title, price, id, description } = product;
+  const { thumbnail, title, price, id, description, rating } = product;
 
   return (
-    <Link to={`/${id}`}>
+    <Link to={`/product/${id}`} className="h-80">
       <div className="transition-shadow h-80 flex flex-col rounded-md hover:shadow-md hover:shadow-gray-300">
         <div className="h-1/2">
           <img
@@ -17,6 +18,7 @@ const Product = ({ product }) => {
         <div className="p-2 h-1/2 flex flex-col justify-between gap-2 items-start">
           <div className="w-full">
             <div className="font-bold">{title}</div>
+            <RatingStars rating={rating} />
             <div className="w-full overflow-clip whitespace-nowrap overflow-ellipsis">
               {description}
             </div>
