@@ -44,11 +44,28 @@ function App() {
   const { dispatch } = useContext(productsContext);
 
   useEffect(() => {
+    const { checked } = JSON.parse(localStorage.getItem("checkedItems")) || {
+      checked: [],
+    };
+
+    if (checked.length > 0) {
+      setTimeout(() => {
+        dispatch({ type: "setFilter", payload: checked });
+      }, 500);
+    }
+
     (async () => {
-      const res = await fetch(`https://dummyjson.com/products?limit=100`);
+      const res = await fetch("https://dummyjson.com/products?limit=100");
       const data = await res.json();
 
-      dispatch({ type: "fetch", payload: data.products });
+      await dispatch({ type: "fetch", payload: data.products });
+    })();
+
+    (async () => {
+      const res = await fetch("https://dummyjson.com/products/categories");
+      const data = await res.json();
+
+      await dispatch({ type: "cat", payload: data });
     })();
   }, [dispatch]);
 

@@ -1,5 +1,5 @@
 import { useContext, useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import { cartContext } from "../../context/cartContext/cartContext";
 
 const ProductPage = () => {
@@ -84,7 +84,9 @@ const ProductPage = () => {
           <p>Rating: {rating}</p>
         </div>
         <div className="w-40 h-10 flex items-center justify-center rounded-md bg-gray-100 border-gray-900-100 border-1 cursor-pointer hover:bg-gray-300 shadow-md">
-          <button onClick={addToCart}>Add to Cart</button>
+          <Link to="/cart">
+            <button onClick={addToCart}>Add to Cart</button>
+          </Link>
         </div>
       </div>
     </div>

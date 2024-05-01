@@ -5,8 +5,7 @@ const initialState = {
   products: null,
   filteredProducts: null,
   searchProducts: null,
-  total: 0,
-  categories: [],
+  categories: null,
 };
 
 const reducer = (state, action) => {
@@ -18,10 +17,89 @@ const reducer = (state, action) => {
         ...state,
         products: payload,
         filteredProducts: payload,
-        total: payload.length,
       };
-    case "filter":
-      return {};
+    case "cat":
+      return {
+        ...state,
+        categories: payload.map((item) => ({ name: item, checked: false })),
+      };
+    case "addFilter": {
+      const filterData = state.filteredProducts;
+      const checkCategory = state.categories.find(
+        ({ name }) => name === payload
+      );
+
+      const checkedCategories = state.categories.filter(
+        ({ checked }) => checked
+      );
+
+      checkCategory.checked = true;
+
+      if (checkedCategories.length === 0) {
+        return {
+          ...state,
+          filteredProducts: filterData.filter(
+            ({ category }) => category === payload
+          ),
+        };
+      }
+
+      const filteredData = state.products.filter(
+        ({ category }) => category === payload
+      );
+      return {
+        ...state,
+        filteredProducts: [...filterData, ...filteredData],
+      };
+    }
+    case "removeFilter": {
+      const filteredData = state.filteredProducts;
+      const checkCategory = state.categories.find(
+        ({ name }) => name === payload
+      );
+
+      const checkedCategories = state.categories.filter(
+        ({ checked }) => checked
+      );
+
+      checkCategory.checked = false;
+
+      if (checkedCategories.length === 1) {
+        return { ...state, filteredProducts: state.products };
+      }
+      return {
+        ...state,
+        filteredProducts: filteredData.filter(
+          ({ category }) => category !== payload
+        ),
+      };
+    }
+    case "clearFilter": {
+      return {
+        ...state,
+        filteredProducts: state.products,
+        categories: state.categories.map(({ name }) => ({
+          name,
+          checked: false,
+        })),
+      };
+    }
+    case "setFilter": {
+      const filterData = state.products;
+      const checkCategories = state.categories;
+
+      return {
+        ...state,
+        filteredProducts: filterData.filter(({ category }) =>
+          payload.find((name) => name === category)
+        ),
+        categories: checkCategories.map(({ name }) => {
+          if (payload.find((item) => item === name))
+            return { name, checked: true };
+          else return { name, checked: false };
+        }),
+      };
+    }
     case "search": {
       const searchQuery = payload.toLowerCase().replace("%20", " ");
       let queries = searchQuery.split(" ");

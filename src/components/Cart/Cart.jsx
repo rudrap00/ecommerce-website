@@ -25,7 +25,7 @@ const Cart = () => {
               <span className="font-bold">Total:</span>
               <span>${totalPrice}</span>
             </div>
-            <button className="w-auto bg-blue-500 text-white px-4 py-2 rounded-md mt-4 ">
+            <button className="w-auto bg-blue-500 text-white px-4 py-2 rounded-md mt-4 cursor-default ">
               Checkout
             </button>
           </div>

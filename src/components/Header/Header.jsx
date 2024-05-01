@@ -1,11 +1,14 @@
-import { useRef } from "react";
+import { useContext, useRef } from "react";
 import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
 import { Link, useNavigate } from "react-router-dom";
+import { productsContext } from "../../context/productsContext/productsContext";
 
 const Header = () => {
   const naviagte = useNavigate();
   const inputRef = useRef("");
+
+  const { dispatch } = useContext(productsContext);
 
   const searchHandler = (e) => {
     e.preventDefault();
@@ -16,10 +19,17 @@ const Header = () => {
     }
   };
 
+  const resetHandler = () => {
+    const checkedItems = localStorage.getItem("checkedItems");
+    if (checkedItems)
+      localStorage.setItem("checkedItems", JSON.stringify({ checked: [] }));
+    dispatch({ type: "clearFilter" });
+  };
+
   return (
     <div className="w-full h-14 px-28 flex-shrink-0 bg-blue-500 flex justify-between items-center">
       <div>
-        <Link to="/">
+        <Link onClick={resetHandler} to="/">
           <AiOutlineHome size={28} />
         </Link>
       </div>
