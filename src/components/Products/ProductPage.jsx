@@ -1,6 +1,7 @@
-import { useContext, useState } from "react";
+import { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Link, useLoaderData } from "react-router-dom";
-import { cartContext } from "../../context/cartContext/cartContext";
+import { addToCart } from "../../app/cart/cartSlice";
 
 const ProductPage = () => {
   const data = useLoaderData();
@@ -17,12 +18,7 @@ const ProductPage = () => {
     setCounter((prev) => (len + prev - 1) % len);
   };
 
-  const { dispatch } = useContext(cartContext);
-
-  const addToCart = () => {
-    const action = { type: "increment", payload: 1, data: data };
-    dispatch(action);
-  };
+  const dispatch = useDispatch();
 
   return (
     <div className="w-full h-auto">
@@ -85,7 +81,9 @@ const ProductPage = () => {
         </div>
         <div className="w-40 h-10 flex items-center justify-center rounded-md bg-gray-100 border-gray-900-100 border-1 cursor-pointer hover:bg-gray-300 shadow-md">
           <Link to="/cart">
-            <button onClick={addToCart}>Add to Cart</button>
+            <button onClick={() => dispatch(addToCart(data))}>
+              Add to Cart
+            </button>
           </Link>
         </div>
       </div>

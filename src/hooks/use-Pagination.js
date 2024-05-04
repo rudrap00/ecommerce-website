@@ -29,8 +29,6 @@ const usePagination = (products) => {
       if (currentPage > 1) setCurrentPage((prev) => prev - 1);
     };
 
-    if (currentPage > pages.length) setCurrentPage(pages.length);
-
     return [
       pages,
       currentPage,

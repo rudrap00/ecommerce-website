@@ -1,12 +1,12 @@
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { RouterProvider, createHashRouter } from "react-router-dom";
+import { fetchData, setFilter } from "./app/products/productsSlice";
 import Cart from "./components/Cart/Cart";
 import Home from "./components/Home/Home";
 import Layout from "./components/Layout/Layout";
 import ProductPage from "./components/Products/ProductPage";
 import Search from "./components/Search/Search";
-import CartProvider from "./context/cartContext/CartProvider";
-import { productsContext } from "./context/productsContext/productsContext";
 
 function App() {
   const router = createHashRouter([
@@ -41,7 +41,7 @@ function App() {
     },
   ]);
 
-  const { dispatch } = useContext(productsContext);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const { checked } = JSON.parse(localStorage.getItem("checkedItems")) || {
@@ -50,30 +50,19 @@ function App() {
 
     if (checked.length > 0) {
       setTimeout(() => {
-        dispatch({ type: "setFilter", payload: checked });
+        dispatch(setFilter(checked));
       }, 500);
     }
 
-    (async () => {
-      const res = await fetch("https://dummyjson.com/products?limit=100");
-      const data = await res.json();
-
-      await dispatch({ type: "fetch", payload: data.products });
-    })();
-
-    (async () => {
-      const res = await fetch("https://dummyjson.com/products/categories");
-      const data = await res.json();
-
-      await dispatch({ type: "cat", payload: data });
-    })();
+    Promise.all([
+      fetch("https://dummyjson.com/products?limit=100"),
+      fetch("https://dummyjson.com/products/categories"),
+    ])
+      .then((resp) => Promise.all(resp.map((res) => res.json())))
+      .then((data) => dispatch(fetchData(data)));
   }, [dispatch]);
 
-  return (
-    <CartProvider>
-      <RouterProvider router={router} />
-    </CartProvider>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;

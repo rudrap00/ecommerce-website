@@ -1,11 +1,12 @@
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useLoaderData } from "react-router-dom";
-import { productsContext } from "../../context/productsContext/productsContext";
+import { nullifySearch, search } from "../../app/products/productsSlice";
 import Product from "../Products/Product";
 
 const content = (
   <div className="h-full w-full flex items-center justify-center overflow-hidden">
-    <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-200 h-32 w-32"></div>
+    <div className="loader ease-linear rounded-full border-8 border-t-8 border-gray-500 h-12 w-12"></div>
   </div>
 );
 
@@ -13,14 +14,15 @@ const Search = () => {
   const query = useLoaderData();
   const [fall, setFall] = useState(content);
 
-  const {
-    state: { searchProducts: productsData },
-    dispatch,
-  } = useContext(productsContext);
+  const dispatch = useDispatch();
+
+  const { searchProducts: productsData } = useSelector(
+    (state) => state.products
+  );
 
   useEffect(() => {
     setTimeout(() => {
-      dispatch({ type: "search", payload: query });
+      dispatch(search(query));
       setFall(() => (
         <div className="text-center">
           Loading Failed. Your internet connection is slow or dead.
@@ -28,7 +30,7 @@ const Search = () => {
       ));
     }, 500);
     return () => {
-      dispatch({ type: "nullify-search" });
+      dispatch(nullifySearch());
       setFall(content);
     };
   }, [dispatch, query]);

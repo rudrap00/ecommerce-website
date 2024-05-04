@@ -1,16 +1,21 @@
-import { useContext } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
-import { cartContext } from "../../context/cartContext/cartContext";
+import { decrement, increment } from "../../app/cart/cartSlice";
 
 const CartItem = ({ data }) => {
   const { id, thumbnail, title, price, count } = data;
-  const { dispatch } = useContext(cartContext);
+  const dispatch = useDispatch();
 
   const changeHandler = (e) => {
     const type = e.target.id;
 
-    const action = { type, payload: 1, data };
-    dispatch(action);
+    switch (type) {
+      case "increment":
+        dispatch(increment(id));
+        break;
+      case "decrement":
+        dispatch(decrement(id));
+    }
   };
 
   return (

@@ -1,14 +1,15 @@
-import { useContext, useRef } from "react";
+import { useRef } from "react";
 import { AiOutlineHome, AiOutlineShoppingCart } from "react-icons/ai";
 import { BsSearch } from "react-icons/bs";
+import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { productsContext } from "../../context/productsContext/productsContext";
+import { resetFilter } from "../../app/products/productsSlice";
 
 const Header = () => {
   const naviagte = useNavigate();
   const inputRef = useRef("");
 
-  const { dispatch } = useContext(productsContext);
+  const dispatch = useDispatch();
 
   const searchHandler = (e) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ const Header = () => {
     const checkedItems = localStorage.getItem("checkedItems");
     if (checkedItems)
       localStorage.setItem("checkedItems", JSON.stringify({ checked: [] }));
-    dispatch({ type: "clearFilter" });
+    dispatch(resetFilter());
   };
 
   return (

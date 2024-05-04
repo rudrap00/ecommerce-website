@@ -1,10 +1,8 @@
-import { useContext } from "react";
-import { cartContext } from "../../context/cartContext/cartContext";
+import { useSelector } from "react-redux";
 import CartItem from "./CartItem";
 
 const Cart = () => {
-  const { state } = useContext(cartContext);
-  const { cart: cartData } = state;
+  const cartData = useSelector((state) => state.cart.value);
 
   const totalPrice = cartData.reduce(
     (acc, { count, price }) => acc + count * price,

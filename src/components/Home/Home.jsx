@@ -1,14 +1,11 @@
-import { useContext } from "react";
 import { GrCaretNext, GrCaretPrevious } from "react-icons/gr";
-import { productsContext } from "../../context/productsContext/productsContext";
+import { useSelector } from "react-redux";
 import usePagination from "../../hooks/use-Pagination";
 import Filter from "../Filter/Filter";
 import Product from "../Products/Product";
 
 const Home = () => {
-  const { state } = useContext(productsContext);
-
-  const { filteredProducts } = state;
+  const { filteredProducts } = useSelector((state) => state.products);
 
   const [
     pages,
@@ -31,7 +28,7 @@ const Home = () => {
               <Product key={item.id} product={item} />
             ))}
         </div>
-        <div className="w-full h-[4rem] flex gap-4 items-center justify-center mt-auto ">
+        <div className="w-full h-[4rem] flex gap-2 items-center justify-center mt-auto ">
           {pages.length > 0 && (
             <>
               <div
