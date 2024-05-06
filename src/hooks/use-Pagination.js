@@ -1,8 +1,12 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 const usePagination = (products) => {
   const [currentPage, setCurrentPage] = useState(1);
   let pages = [];
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [products]);
 
   if (products) {
     const totalItems = products?.length;
@@ -12,8 +16,10 @@ const usePagination = (products) => {
     const firstItem = (currentPage - 1) * itemsPerPage;
     const lastItem = Math.min(currentPage * itemsPerPage, products.length);
 
-    if (totalPages > 0) pages = [...Array(totalPages + 1).keys()];
-    pages.shift();
+    if (totalPages > 0) {
+      pages = [...Array(totalPages + 1).keys()];
+      pages.shift();
+    }
 
     const pageChangeHandler = (e) => {
       const pageNum = +e.target.innerHTML;

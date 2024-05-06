@@ -1,5 +1,5 @@
+import { Rating } from "@mui/material";
 import { Link } from "react-router-dom";
-import RatingStars from "./RatingStars";
 
 const Product = ({ product }) => {
   const { thumbnail, title, price, id, description, rating } = product;
@@ -18,7 +18,7 @@ const Product = ({ product }) => {
         <div className="p-2 h-1/2 flex flex-col justify-between gap-2 items-start">
           <div className="w-full">
             <div className="font-bold">{title}</div>
-            <RatingStars rating={rating} />
+            <Rating defaultValue={rating} precision={0.1} readOnly />
             <div className="w-full overflow-clip whitespace-nowrap overflow-ellipsis">
               {description}
             </div>
